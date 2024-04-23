@@ -1,6 +1,7 @@
 import './App.css';
 import React, { useState, useEffect } from 'react'
 import Modal from 'react-modal'
+import { QuestionTimer } from './QuestionTimer';
 
 
 export const QuestionCard = ( {value, clicked, question, category, choices, answer, score} ) => {
@@ -9,10 +10,10 @@ export const QuestionCard = ( {value, clicked, question, category, choices, answ
     const [showModal, setShowModal] = useState(false);
     const [userGuess, setUserGuess] = useState(null);
 
-    const getTileColor = (clicked) => {
+    const getTileColor = () => {
 
-        if (color === 'green'){
-            return 'green';
+        if (color === 'green' || color === 'red'){
+            return color;
         }else if(category === 'Sports'){
             return 'blue';
         }else if(category === 'Science'){
@@ -33,25 +34,25 @@ export const QuestionCard = ( {value, clicked, question, category, choices, answ
     const submitAnswer = () => {
         if(userGuess === answer){
             console.log("correct");
+             setColor('green');
             clicked(value,score,1); 
         }else{
             let tempScore = 0 - score;
+            setColor('red');
             clicked(value,tempScore,0);
             console.log(tempScore);
             console.log("wrong");
         } 
-        setShowModal(false);
+        closeModal();
     }
 
     const updateUserGuess = (choice) => {
         setUserGuess(choice);
     }
     
-    // getTileColor();
     Modal.setAppElement('#root');
 
     const handleQuestion = () => {
-        setColor('green');
         setShowModal(true)
         console.log(choices);
         console.log(answer);
@@ -72,15 +73,16 @@ export const QuestionCard = ( {value, clicked, question, category, choices, answ
           <button
             key={index}
             onClick={() => updateUserGuess(choice)}
-            style={{ backgroundColor: userGuess === choice ? 'yellow' : 'white' }}
-          >
+            style={{ backgroundColor: userGuess === choice ? 'yellow' : 'white' }}>
             {choice}
           </button>
         ))}
             </div>
             
+            <QuestionTimer  startTime={true}/>
+
             <button onClick={submitAnswer}> Submit Answer</button>
-            <button onClick={closeModal}> Close Modal</button>
+            <button onClick={closeModal}> Pass </button>
         </div>
       </Modal>
 

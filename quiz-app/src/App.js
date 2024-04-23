@@ -3,19 +3,11 @@ import './App.css';
 import { GameBoard } from './GameBoard';
 import { useState } from 'react';
 
-// function QuestionCard ({value}) {
-//   return (
-    
-//     <button className="Question">{value}</button>
-    
-//   );
-// };
-
 
 export default function App() {
 
   const [score, setScore] = useState(0);
-  const [scoreColor, setScoreColor] = useState('grey');
+  const [resetGame, setResetGame] = useState(false); 
 
   const updateScore = (points) => {
     setScore(score + points);
@@ -32,6 +24,8 @@ export default function App() {
 
   }
 
+
+
   return (
     <div className="App">
       <header className="App-header">
@@ -41,6 +35,12 @@ export default function App() {
         <h2 style={{ color: getScoreColor() }}>
           Score = {score}
         </h2>
+        {/* <h3>
+        <button
+            onClick={() => restartGame()}>
+           Restart
+          </button>
+        </h3> */}
         <GameBoard returnScore={updateScore}/>
       </header>
     </div>

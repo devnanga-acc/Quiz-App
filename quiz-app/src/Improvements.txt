@@ -1,0 +1,17 @@
+Improvements with Gen AI
+
+1) Add a CPU difficulty level that you code based on GenAI - different levels for example
+1st grader, high schooler, university graduate, PhD graduate (the times would fluctuate)
+The GenAI component would come in because you can use prompt engineering "Pretend you are a 1st grader, what do 
+you think the reasoning for this would be"
+
+2) Use Gen AI to track your learning metrics and assign you a rank based on how often you play and your scores.
+For example when you start let's say you score and average of -5 then it would put you at a first grader level.
+Then you can use a Gen AI or ML algorithm to spit out a chart report of your lacking categories and it can prompt 
+you with different resources to brush up on general knowledge in these aspects.
+
+3) Use Gen AI to analyse the question pool and assign scores based on what it thinks the difficulty is. Bonues points if
+it reduces the scores as you play more often and get smarter.
+
+4) Use Gen AI to generate a color palette or alternative way to play the game for persons who are colorblind or
+visually impaired.

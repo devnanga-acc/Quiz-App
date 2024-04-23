@@ -29,42 +29,21 @@ generateQuestionList();
 
 export function GameBoard( {returnScore} ) {
 
-    
-    //Running this function just once when the GameBoard Component Mounts to Generate Fresh List of Questions.
-    // useEffect(() => {
-        
-    // if (!generateList) {
-    //     generateQuestionList(); // Only call the function if generateList is true
-    //     setDidListGenerate(true); // Update didListGenerate to prevent running the effect again
-    // }
-    // }, []);
-    // const generateQuestionList = () => {
-
-    //     let categories = ["Sports", "Science", "Music", "Nature"].sort(() => Math.random() - 0.5);
-    //     for (let category of categories){
-    //         const filteredQuestions = allQuestions.filter(question => question.category === category);
-    //         const shuffledQuestions = filteredQuestions.sort(() => Math.random() - 0.5);
-    //         const selectedQuestions = shuffledQuestions.slice(0, 4);
-    //         gameQuestions.push(selectedQuestions);
-    //     }
-    //     console.log(gameQuestions);
-
-    // }
-    //console.log(gameQuestions);
-    
-    const [question, setQuestion] = useState(0);
-    const [generateList, setDidListGenerate] = useState(false); //var to ensure list generates
-    
-
     //This holds the value of the current question, number of points received as well as the status to update color of scoreboard
     const handleQuestion = (value,score,correct) => {
-        setQuestion(value);
+        //setQuestion(value);
         returnScore(score, correct);
     };
 
-    
+    // if(resetGame){
+    //     gameQuestions = [];
+    //     generateQuestionList();
+    //     console.log(gameQuestions);
+    //     resetGame();
+    // }
+      
 
-    
+    //console.log(resetGame);
 
     return (
       <div className="Game-Board">
@@ -73,6 +52,7 @@ export function GameBoard( {returnScore} ) {
             <div className="Game-Row" key={rowIndex}>
             {row.map((question, i) => (
                 <QuestionCard
+               
                 key={i}
                 value={`Question ${i + 1}\nScore: ${question.score} `}
                 clicked={handleQuestion}
