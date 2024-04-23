@@ -4,13 +4,14 @@ import './App.css';
 
 
 
-export const QuestionTimer = ( {startTime} ) => {
+export const QuestionTimer = ( {startTime, timeout} ) => {
 
-    const [seconds, setSeconds] = useState(60);
+    const [seconds, setSeconds] = useState(20);
     const [started, setStarted] = useState(false);
 
-    const timeout = () => {
-        console.log('Time done');
+    const timeoutLocal = () => {
+        setStarted(false);
+        timeout()
     }
 
     // const startTimer = () => {
@@ -35,18 +36,28 @@ export const QuestionTimer = ( {startTime} ) => {
             }, 1000)
         }else if (seconds === 0){
             clearInterval(interval);
-            timeout();
+            timeoutLocal();
         }
         return () => clearInterval(interval);
-    }, [started, seconds]);
+    }, [started, seconds, timeoutLocal]);
+
+    let timeColor = 'green';
+    let upperTime = 20;
+    let midTime = upperTime/2;
+    let lowTime = upperTime/4
     
-    console.log(startTime);
-    
+    if(seconds < upperTime && seconds >= midTime){
+        timeColor = 'green';
+    }else if(seconds < midTime && seconds >= lowTime){
+        timeColor = 'yellow';
+    }else if(seconds < lowTime){
+        timeColor = 'red';
+    }
 
     return (
         <div>
             <h3>Countdown Timer</h3>
-            <p>{seconds}</p>
+            <p style={{color:timeColor}}>{seconds}</p>
             
         </div>
       

@@ -24,7 +24,11 @@ export default function App() {
 
   }
 
-
+  const restartGame = () => {
+    setResetGame(true);
+    setScore(0);
+    //setResetGame(false);
+  }
 
   return (
     <div className="App">
@@ -35,13 +39,13 @@ export default function App() {
         <h2 style={{ color: getScoreColor() }}>
           Score = {score}
         </h2>
-        {/* <h3>
+        <h3>
         <button
             onClick={() => restartGame()}>
            Restart
           </button>
-        </h3> */}
-        <GameBoard returnScore={updateScore}/>
+        </h3>
+        <GameBoard returnScore={updateScore}  resetGame={resetGame}/>
       </header>
     </div>
   );

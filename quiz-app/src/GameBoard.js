@@ -18,32 +18,73 @@ const generateQuestionList = () => {
         selectedQuestions[1].score = 10;
         selectedQuestions[2].score = 15;
         selectedQuestions[3].score = 20;
-       // for (let item of selectedQuestions){
-            gameQuestions.push(selectedQuestions);
-        //}
+        gameQuestions.push(selectedQuestions);
         
     }
 
 }
 generateQuestionList();   
 
-export function GameBoard( {returnScore} ) {
+export function GameBoard( {returnScore, resetGame} ) {
 
+    const [passButton, setPassButton]= useState(false);
+    const [displayResult, setDisplayresult] = useState(false);
+    const [showMessage, setShowMessage] = useState("");
+    const [timeoutInterval, setTimeoutInterval] = useState(null);
+
+    const resetStates = () => {
+        setPassButton(false); 
+        setDisplayresult(false);
+        setShowMessage(false);
+    }
+
+
+    console.log(resetGame)
+    if(resetGame){
+        gameQuestions = [];
+        generateQuestionList();
+        console.log(gameQuestions);
+        resetStates();
+        // setPassButton(false); 
+        // setDisplayresult(false);
+        // setShowMessage(false);
+    }
+
+    
     //This holds the value of the current question, number of points received as well as the status to update color of scoreboard
     const handleQuestion = (value,score,correct) => {
-        //setQuestion(value);
         returnScore(score, correct);
+        returnMessage(score,correct);
+        setTimeout(() => {
+            toggleResult();
+        }, 5000);
     };
 
-    // if(resetGame){
-    //     gameQuestions = [];
-    //     generateQuestionList();
-    //     console.log(gameQuestions);
-    //     resetGame();
-    // }
-      
+    const returnMessage = (score,correct) => {
+        let message;
+        if (correct === 0){
+            let tempScore = Math.abs(score);
+            message = "You got the question wrong and lost " + tempScore + " Points";
+        }else if (correct === 1){
+            message = "You got the question correct and won " + score + " Points";
+        }else if (correct === 2 ){
+            message = "You passed the question";
+        }
+        console.log(message)
+        setShowMessage(message)
+        setDisplayresult(true)
+    }
 
-    //console.log(resetGame);
+    const toggleResult = () => {
+        clearTimeout(timeoutInterval);
+        setDisplayresult(false);
+    }
+
+    const handlePassButton = () => {
+        if(!passButton)
+            setPassButton(true);
+    }
+
 
     return (
       <div className="Game-Board">
@@ -61,10 +102,19 @@ export function GameBoard( {returnScore} ) {
                 choices={question.answers}
                 answer={question.correct}
                 score={question.score}
+                passClicked={passButton}
+                handlePassButton={handlePassButton}
                 />
             ))}
             </div>
         ))}
+
+    <Modal isOpen={displayResult} className="modal-overlay">
+            <div className="modal-content">
+                <p className="modal-message">{showMessage}</p>
+                <button className="modal-button" onClick={toggleResult}>Continue</button>
+            </div>
+    </Modal>
   
       </div>
     );

@@ -4,15 +4,16 @@ import Modal from 'react-modal'
 import { QuestionTimer } from './QuestionTimer';
 
 
-export const QuestionCard = ( {value, clicked, question, category, choices, answer, score} ) => {
+export const QuestionCard = ( {value, clicked, question, category, choices, answer, score, passClicked, handlePassButton} ) => {
 
     const [color, setColor] = useState('blue');
     const [showModal, setShowModal] = useState(false);
     const [userGuess, setUserGuess] = useState(null);
+    const [alreadyOpened, setAlreadyOpened]= useState(false);
 
     const getTileColor = () => {
 
-        if (color === 'green' || color === 'red'){
+        if (color === 'green' || color === 'red' || color == 'grey'){
             return color;
         }else if(category === 'Sports'){
             return 'blue';
@@ -34,14 +35,12 @@ export const QuestionCard = ( {value, clicked, question, category, choices, answ
     const submitAnswer = () => {
         if(userGuess === answer){
             console.log("correct");
-             setColor('green');
+            setColor('green');
             clicked(value,score,1); 
         }else{
             let tempScore = 0 - score;
             setColor('red');
             clicked(value,tempScore,0);
-            console.log(tempScore);
-            console.log("wrong");
         } 
         closeModal();
     }
@@ -54,16 +53,32 @@ export const QuestionCard = ( {value, clicked, question, category, choices, answ
 
     const handleQuestion = () => {
         setShowModal(true)
-        console.log(choices);
+        setAlreadyOpened(true)
         console.log(answer);
       };
+
+      const timeout = () => {
+        setShowModal(false)
+        let tempScore = 0 - score;
+        setColor('red');
+        clicked(value,tempScore,0);
+      }
+
+      const onPass = () => {
+        closeModal();
+        console.log("passed");
+        setColor('grey');
+        clicked(value,0,2); 
+        handlePassButton();
+      }
 
     return (
       <>
       <button 
       className="Question" 
       onClick={() => handleQuestion()} 
-      style={{ backgroundColor: getTileColor() }}>{value}</button>
+      style={{ backgroundColor: getTileColor() }}
+      disabled={alreadyOpened}>{value}</button>
 
       <Modal isOpen={showModal}>
         <div>
@@ -71,6 +86,7 @@ export const QuestionCard = ( {value, clicked, question, category, choices, answ
             <div>
             {choices.map((choice, index) => (
           <button
+
             key={index}
             onClick={() => updateUserGuess(choice)}
             style={{ backgroundColor: userGuess === choice ? 'yellow' : 'white' }}>
@@ -79,10 +95,10 @@ export const QuestionCard = ( {value, clicked, question, category, choices, answ
         ))}
             </div>
             
-            <QuestionTimer  startTime={true}/>
+            <QuestionTimer  startTime={true} timeout={timeout}/>
 
             <button onClick={submitAnswer}> Submit Answer</button>
-            <button onClick={closeModal}> Pass </button>
+            <button onClick={onPass} disabled={passClicked}> Pass </button>
         </div>
       </Modal>
 
