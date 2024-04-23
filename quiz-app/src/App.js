@@ -15,9 +15,21 @@ import { useState } from 'react';
 export default function App() {
 
   const [score, setScore] = useState(0);
+  const [scoreColor, setScoreColor] = useState('grey');
 
   const updateScore = (points) => {
     setScore(score + points);
+  }
+
+  const getScoreColor = () => {
+    
+    if(score > 0){
+      return 'green';
+    }else if (score < 0){
+      return 'red'
+    }else 
+      return 'grey';
+
   }
 
   return (
@@ -26,10 +38,10 @@ export default function App() {
         <h1>
           Welcome to My Game
         </h1>
-        <h2>
+        <h2 style={{ color: getScoreColor() }}>
           Score = {score}
         </h2>
-        <GameBoard returnScore={updateScore} />
+        <GameBoard returnScore={updateScore}/>
       </header>
     </div>
   );
