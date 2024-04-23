@@ -39,7 +39,7 @@ export const QuestionTimer = ( {startTime, timeout} ) => {
             timeoutLocal();
         }
         return () => clearInterval(interval);
-    }, [started, seconds, timeoutLocal]);
+    }, [started, seconds]);
 
     let timeColor = 'green';
     let upperTime = 20;

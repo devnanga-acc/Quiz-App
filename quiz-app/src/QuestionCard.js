@@ -4,16 +4,30 @@ import Modal from 'react-modal'
 import { QuestionTimer } from './QuestionTimer';
 
 
-export const QuestionCard = ( {value, clicked, question, category, choices, answer, score, passClicked, handlePassButton} ) => {
+
+export const QuestionCard = ( {value, clicked, question, category, choices, answer, score, passClicked, handlePassButton, resetGame} ) => {
 
     const [color, setColor] = useState('blue');
     const [showModal, setShowModal] = useState(false);
     const [userGuess, setUserGuess] = useState(null);
     const [alreadyOpened, setAlreadyOpened]= useState(false);
 
+    const resetStates = () => {
+        setColor('blue');
+        setUserGuess(null);
+        setAlreadyOpened(false);
+    }
+
+    useEffect(() => {
+        if(resetGame){
+            resetStates();
+        }
+        
+    }, [resetGame]);
+
     const getTileColor = () => {
 
-        if (color === 'green' || color === 'red' || color == 'grey'){
+        if (color === 'green' || color === 'red' || color === 'grey'){
             return color;
         }else if(category === 'Sports'){
             return 'blue';
@@ -80,25 +94,25 @@ export const QuestionCard = ( {value, clicked, question, category, choices, answ
       style={{ backgroundColor: getTileColor() }}
       disabled={alreadyOpened}>{value}</button>
 
-      <Modal isOpen={showModal}>
+      <Modal className="modal-overlay-question" isOpen={showModal} >
         <div>
             <h2>{question}</h2>
-            <div>
-            {choices.map((choice, index) => (
-          <button
-
-            key={index}
-            onClick={() => updateUserGuess(choice)}
-            style={{ backgroundColor: userGuess === choice ? 'yellow' : 'white' }}>
-            {choice}
-          </button>
-        ))}
+            <div className='menu-items'>
+                {choices.map((choice, index) => (
+            <button
+                className='menu-button'
+                key={index}
+                onClick={() => updateUserGuess(choice)}
+                style={{ backgroundColor: userGuess === choice ? 'yellow' : 'white' }}>
+                {choice}
+            </button>
+            ))}
             </div>
             
             <QuestionTimer  startTime={true} timeout={timeout}/>
 
-            <button onClick={submitAnswer}> Submit Answer</button>
-            <button onClick={onPass} disabled={passClicked}> Pass </button>
+            <button className="submit-button" onClick={submitAnswer}> Submit Answer</button>
+            <button className='cancel-button' onClick={onPass} disabled={passClicked}> Pass </button>
         </div>
       </Modal>
 

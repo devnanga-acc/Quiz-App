@@ -9,7 +9,9 @@ let gameQuestions = [];
 
 const generateQuestionList = () => {
 
+    //let games;
     let categories = ["Sports", "Science", "Music", "Nature"].sort(() => Math.random() - 0.5);
+    //let categories = ["Sports"]
     for (let category of categories){
         const filteredQuestions = allQuestions.filter(question => question.category === category);
         const shuffledQuestions = filteredQuestions.sort(() => Math.random() - 0.5);
@@ -21,40 +23,50 @@ const generateQuestionList = () => {
         gameQuestions.push(selectedQuestions);
         
     }
+    //return gameQuestions;
 
 }
 generateQuestionList();   
 
-export function GameBoard( {returnScore, resetGame} ) {
+export function GameBoard( {returnScore, resetGame, postResetGame} ) {
+
+    //const [gameQuestions1, setGameQuestions] = useState(generateQuestionList())
 
     const [passButton, setPassButton]= useState(false);
     const [displayResult, setDisplayresult] = useState(false);
     const [showMessage, setShowMessage] = useState("");
     const [timeoutInterval, setTimeoutInterval] = useState(null);
 
+    const [totalOpened, setOpened] = useState(0);
+
+    const addCount = () => {
+        setOpened(prev => prev + 1);
+    }
+
     const resetStates = () => {
         setPassButton(false); 
         setDisplayresult(false);
         setShowMessage(false);
+        setOpened(0);
     }
 
+    useEffect(() => {
+        if(resetGame){
+            gameQuestions = [];
+            generateQuestionList();
+            resetStates();
+            postResetGame();
+        }
+    }, [resetGame]);
 
-    console.log(resetGame)
-    if(resetGame){
-        gameQuestions = [];
-        generateQuestionList();
-        console.log(gameQuestions);
-        resetStates();
-        // setPassButton(false); 
-        // setDisplayresult(false);
-        // setShowMessage(false);
-    }
-
+    //setGameQuestions(generateQuestionList());
     
     //This holds the value of the current question, number of points received as well as the status to update color of scoreboard
     const handleQuestion = (value,score,correct) => {
-        returnScore(score, correct);
+        addCount();
+        returnScore(score, totalOpened, correct);
         returnMessage(score,correct);
+        
         setTimeout(() => {
             toggleResult();
         }, 5000);
@@ -70,7 +82,6 @@ export function GameBoard( {returnScore, resetGame} ) {
         }else if (correct === 2 ){
             message = "You passed the question";
         }
-        console.log(message)
         setShowMessage(message)
         setDisplayresult(true)
     }
@@ -104,6 +115,7 @@ export function GameBoard( {returnScore, resetGame} ) {
                 score={question.score}
                 passClicked={passButton}
                 handlePassButton={handlePassButton}
+                resetGame={resetGame}
                 />
             ))}
             </div>
