@@ -3,7 +3,7 @@ import './App.css';
 
 
 
-
+//This is a timer for the question. Currently it is set at 20 seconds for fast testing and review
 export const QuestionTimer = ( {startTime, timeout} ) => {
 
     const [seconds, setSeconds] = useState(20);
@@ -13,14 +13,6 @@ export const QuestionTimer = ( {startTime, timeout} ) => {
         setStarted(false);
         timeout()
     }
-
-    // const startTimer = () => {
-    //     setStarted(true);
-    // } 
-
-    // if(startTime){
-    //     startTimer();
-    // }
 
     // need to use this block to prevent re rendering
     useEffect(() => {
@@ -46,6 +38,7 @@ export const QuestionTimer = ( {startTime, timeout} ) => {
     let midTime = upperTime/2;
     let lowTime = upperTime/4
     
+    //Sets color based on time left
     if(seconds < upperTime && seconds >= midTime){
         timeColor = 'green';
     }else if(seconds < midTime && seconds >= lowTime){

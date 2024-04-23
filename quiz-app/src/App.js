@@ -7,22 +7,22 @@ import Modal from 'react-modal'
 
 export default function App() {
 
-  const [score, setScore] = useState(0);
-  const [resetGame, setResetGame] = useState(false); 
-  const [totalOpened, setTotalOpened]= useState(0);
-  const [showFinalModal, setShowFinalModal] = useState(false);
-  const [showMessage, setShowMessage] = useState("");
+  const [score, setScore] = useState(0); //State to track score
+  const [resetGame, setResetGame] = useState(false); //State to track if to reset
+  const [totalOpened, setTotalOpened]= useState(0); //State to track number of tiles clicked
+  const [showFinalModal, setShowFinalModal] = useState(false); //State to track if to show final message
+  const [showMessage, setShowMessage] = useState(""); //State to hold message based on winning or losing
 
+  //Keeps track of the total score
   const updateScore = (points, totalOpened) => {
     setScore(score + points);
     setTotalOpened(totalOpened);
   }
 
+  //Need this hook to ensure the score updates fully before we display the final message
   useEffect(() => {
-    // console.log(totalOpened)
-    // console.log(score);
-    // let maxScore = 50;
-    // let count = 3;
+
+    //Setting fixed scores for testing purposes
     let maxScore = 200;
     let count = 15;
 
@@ -37,6 +37,7 @@ export default function App() {
 
   }, [score])
 
+  //Based on the user's score we set the color
   const getScoreColor = () => {
     
     if(score > 0){
@@ -48,17 +49,20 @@ export default function App() {
 
   }
 
+  //Helper function to restart the entire game and pass the messages down to children
   const restartGame = () => {
     setScore(0); 
     setShowFinalModal(false);
     setResetGame(true);
   }
 
+  //Set the Reset Flag back to false
   const postResetGame = () => {
       setResetGame(false);
       
   }
 
+  //Main component
   return (
     <div className="App">
       <header className="App-header">
